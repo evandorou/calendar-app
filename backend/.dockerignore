@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+.git
+.gitignore
+venv/
+.venv/
+calendar.db
+*.db
+.env
+.DS_Store

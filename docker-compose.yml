@@ -1,0 +1,30 @@
+services:
+  backend:
+    build: ./backend
+    container_name: notebook-calendar-backend
+    ports:
+      - "8000:8000"
+    environment:
+      # Comma-separated list of allowed frontend origins in production,
+      # e.g. "https://your-site.netlify.app". "*" is fine for local dev.
+      - ALLOWED_ORIGINS=*
+      - DATABASE_URL=sqlite:////data/calendar.db
+    volumes:
+      - calendar-data:/data
+    restart: unless-stopped
+
+  frontend:
+    image: python:3.12-slim
+    container_name: notebook-calendar-frontend
+    working_dir: /site
+    volumes:
+      - ./frontend:/site:ro
+    ports:
+      - "5500:5500"
+    command: python3 -m http.server 5500
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  calendar-data:
